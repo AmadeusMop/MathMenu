@@ -1,5 +1,18 @@
 import java.util.Scanner;
 
+/*
+ * DISCLAIMER:
+ * THE FOLLOWING CODE WAS WRITTEN WHILE I WAS SICK.
+ * 
+ * DO NOT TAKE THE FOLLOWING CODE AS REFLECTIVE 
+ * OF MY PROGRAMMING SKILLS AS A WHOLE.
+ * 
+ * THANK YOU.
+ * 
+ * -Cillian
+ */
+
+
 public class Main {
 	public static void main(String[] args) {
 		Scanner console = new Scanner(System.in);
