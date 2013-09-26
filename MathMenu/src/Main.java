@@ -16,17 +16,44 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args) {
 		Scanner console = new Scanner(System.in);
-		int choice;
+		int choice, num = 0;
+		int[] input;
 		System.out.println("Some introductory text here.");
 		while(true) {
 			do {
 				System.out.println("Some explanatory menu text here.");
 				choice = menuChoice(console);
-				System.out.println("The number entered was: " + choice);
+				if(choice == 0) break;
+				else if(choice == 1) {
+					input = getMultiplicationInput(console);
+					num = multiply(input[0], input[1]);
+				} else if(choice == 2) {
+					input = getExponentInput(console);
+					num = exponent(input[0], input[1]);
+				}
+				System.out.println("Output: " + num);
 			} while(choice != 0);
-			System.out.print("Are you sure you wish to exit? (y/n):");
+			System.out.print("Are you sure you wish to exit? (y/n): ");
 			if(console.next().toLowerCase().charAt(0) == 'y') break;
 		}
+	}
+	
+	public static int[] getExponentInput(Scanner console) {
+		int[] output = {0, 0};
+		System.out.print("Base: ");
+		output[0] = console.nextInt();
+		System.out.print("Power: ");
+		output[1] = console.nextInt();
+		return output;
+	}
+	
+	public static int[] getMultiplicationInput(Scanner console) {
+		int[] output = {0, 0};
+		System.out.print("First number: ");
+		output[0] = console.nextInt();
+		System.out.print("Second number: ");
+		output[1] = console.nextInt();
+		return output;
 	}
 	
 	public static int menuChoice(Scanner console) {
