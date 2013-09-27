@@ -16,17 +16,33 @@ import java.util.Scanner;
 public class Main {
 	public static void main(String[] args) {
 		Scanner console = new Scanner(System.in);
+		String exitInput;
+		boolean loop = true;
 		int choice, num = 0;
 		int[] input;
 		System.out.println("Eh, something goes here. I'll get to it later. Probably.\n");
-		while(true) {
+		System.out.println("This should be explanatory menu text, I think?");
+		System.out.println("I don't know. UI design isn't my strong suit.");
+		
+		while(loop) {
 			do {
-				System.out.println("This should be explanatory menu text, I think?");
-				System.out.println("I don't know. UI design isn't my strong suit.");
 				System.out.println("Your options: 0 = Exit, 1 = Multiply, 2 = Exponentiate");
 				choice = menuChoice(console);
-				if(choice == 0) break;
-				else {
+				if(choice == 0) {
+					while(true) {
+						System.out.print("Are you sure you wish to exit? (y/n): ");
+						exitInput = console.nextLine().trim().toLowerCase();
+						if(exitInput.equals("y")) {
+							loop = false;
+							break;
+						} else if(exitInput.equals("n")) {
+							loop = true;
+							break;
+						} else {
+							System.out.println("Something something error message. The input must be \"y\" or \"n\".");
+						}
+					}
+				} else {
 					input = getInput(console, choice);
 					
 					if(choice == 1) {
@@ -37,12 +53,12 @@ public class Main {
 						throw new IllegalArgumentException("No menu choice with code: " + choice);
 					}
 					
-					System.out.println("Output: " + num);
+					System.out.println("Output: " + num + "\n\n");
 				}
 			} while(choice != 0);
-			System.out.print("Are you sure you wish to exit? (y/n): ");
-			if(console.next().toLowerCase().charAt(0) == 'y') break;
 		}
+		
+		System.out.println("Goodbye!");
 	}
 	
 	public static int[] getInput(Scanner console, int operation) {
@@ -68,39 +84,27 @@ public class Main {
 			do {
 				inputInvalid = false;
 				System.out.print(prompts[i]);
-				input = console.next();
+				input = console.nextLine();
 				try {
 					output[i] = Integer.parseInt(input);
-					if(output[i] < 0 && i == 1 && operation == 1) throw new IllegalArgumentException();
+					if(output[i] < 0 && i == 1 && operation == 2) throw new IllegalArgumentException("For exponents, the power cannot be negative!");
+					if(output[i] < 0 && operation == 1) throw new IllegalArgumentException("The spec says you can't multiply negative numbers right now. Sorry.");
 				} catch(NumberFormatException e) {
 					System.out.println("You must enter a number!");
 					System.out.println("You entered: \"" + input + "\"");
+					try {
+						Integer.parseInt(input.trim());
+						System.out.println("You cannot have whitespace in your input.");
+					} catch(NumberFormatException n) {};
 					inputInvalid = true;
 				} catch(IllegalArgumentException e) {
-					System.out.println("For exponents, the power cannot be negative!");
+					System.out.println(e.getMessage());
 					System.out.println("You entered: " + output[i]);
+					inputInvalid = true;
 				}
 			} while(inputInvalid);
 		}
 		
-		return output;
-	}
-	
-	public static int[] getExponentInput(Scanner console) {
-		int[] output = {0, 0};
-		System.out.print("Base: ");
-		output[0] = console.nextInt();
-		System.out.print("Power: ");
-		output[1] = console.nextInt();
-		return output;
-	}
-	
-	public static int[] getMultiplicationInput(Scanner console) {
-		int[] output = {0, 0};
-		System.out.print("First number: ");
-		output[0] = console.nextInt();
-		System.out.print("Second number: ");
-		output[1] = console.nextInt();
 		return output;
 	}
 	
@@ -112,7 +116,7 @@ public class Main {
 			try {
 				c = false; //There's probably an easier way to achieve this. I don't remember any. I'm rather sick right now.
 				System.out.print("Enter your choice (0, 1, 2): ");
-				input = console.next();
+				input = console.nextLine().trim();
 				choice = Integer.parseInt(input);
 				if(choice < 0 || choice > 2) throw new IllegalArgumentException();
 			} catch (NumberFormatException e) {
