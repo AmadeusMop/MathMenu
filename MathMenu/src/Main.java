@@ -18,10 +18,12 @@ public class Main {
 		Scanner console = new Scanner(System.in);
 		int choice, num = 0;
 		int[] input;
-		System.out.println("Some introductory text here.");
+		System.out.println("Eh, something goes here. I'll get to it later. Probably.\n");
 		while(true) {
 			do {
-				System.out.println("Some explanatory menu text here.");
+				System.out.println("This should be explanatory menu text, I think?");
+				System.out.println("I don't know. UI design isn't my strong suit.");
+				System.out.println("Your options: 0 = Exit, 1 = Multiply, 2 = Exponentiate");
 				choice = menuChoice(console);
 				if(choice == 0) break;
 				else {
