@@ -24,18 +24,64 @@ public class Main {
 				System.out.println("Some explanatory menu text here.");
 				choice = menuChoice(console);
 				if(choice == 0) break;
-				else if(choice == 1) {
-					input = getMultiplicationInput(console);
-					num = multiply(input[0], input[1]);
-				} else if(choice == 2) {
-					input = getExponentInput(console);
-					num = exponent(input[0], input[1]);
+				else {
+					input = getInput(console, choice);
+					
+					if(choice == 1) {
+						num = multiply(input[0], input[1]);
+					} else if(choice == 2) {
+						num = exponent(input[0], input[1]);
+					} else {
+						throw new IllegalArgumentException("No menu choice with code: " + choice);
+					}
+					
+					System.out.println("Output: " + num);
 				}
-				System.out.println("Output: " + num);
 			} while(choice != 0);
 			System.out.print("Are you sure you wish to exit? (y/n): ");
 			if(console.next().toLowerCase().charAt(0) == 'y') break;
 		}
+	}
+	
+	public static int[] getInput(Scanner console, int operation) {
+		String[] prompts = new String[2];
+		String input;
+		int[] output = {0, 0};
+		boolean inputInvalid;
+		
+		switch(operation) { //In case I need to add more operations later.
+		case 1:
+			prompts[0] = "First number: ";
+			prompts[1] = "Second number: ";
+			break;
+		case 2:
+			prompts[0] = "Base: ";
+			prompts[1] = "Power: ";
+			break;
+		default:
+			throw new IllegalArgumentException("No operation with code: " + operation);
+		}
+		
+		for(int i = 0; i < 2; i++) {
+			do {
+				inputInvalid = false;
+				System.out.print(prompts[i]);
+				input = console.next();
+				try {
+					output[i] = Integer.parseInt(input);
+					if(output[i] < 0 && i == 1 && operation == 1) throw new IllegalArgumentException();
+				} catch(NumberFormatException e) {
+					System.out.println("You must enter a number!");
+					System.out.println("You entered: \"" + input + "\"");
+					inputInvalid = true;
+				} catch(IllegalArgumentException e) {
+					System.out.println("For exponents, the power cannot be negative!");
+					System.out.println("You entered: " + output[i]);
+				}
+			} while(inputInvalid);
+		}
+		
+		return output;
 	}
 	
 	public static int[] getExponentInput(Scanner console) {
